@@ -1,6 +1,7 @@
 from fastapi import FastAPI, Depends, HTTPException
 from sqlalchemy.orm import Session
 import database, models, schemas
+import data_loader
 
 # 데이터베이스 테이블 생성
 models.Base.metadata.create_all(bind=database.engine)
@@ -65,3 +66,36 @@ def delete_post(post_id: int, password: str, db: Session = Depends(get_db)):
     db.delete(db_post)
     db.commit()
     return {"message": "삭제 완료"}
+# main.py
+
+@app.get("/api/data/tourism")
+def get_tourism():
+    return data_loader.load_json_data("광주_전라권_관광지.json")
+
+@app.get("/api/data/festivals")
+def get_festivals():
+    return data_loader.load_json_data("광주_전라권_축제공연행사.json")
+
+@app.get("/api/data/leports")
+def get_leports():
+    return data_loader.load_json_data("광주_전라권_레포츠.json")
+
+@app.get("/api/data/culture")
+def get_culture():
+    return data_loader.load_json_data("광주_전라권_문화시설.json")
+
+@app.get("/api/data/shopping")
+def get_shopping():
+    return data_loader.load_json_data("광주_전라권_쇼핑.json")
+
+@app.get("/api/data/stay")
+def get_stay():
+    return data_loader.load_json_data("광주_전라권_숙박.json")
+
+@app.get("/api/data/courses")
+def get_courses():
+    return data_loader.load_json_data("광주_전라권_여행코스.json")
+
+@app.get("/api/data/restaurants")
+def get_restaurants():
+    return data_loader.load_json_data("광주_전라권_음식점.json")
